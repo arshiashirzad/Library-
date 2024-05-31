@@ -222,6 +222,46 @@ public:
         return false;
     }
 };
+class VIPMember : public Member {
+private:
+    int remainingBooks;
+
+public:
+    VIPMember(string name, string id, string memberId, int remainingBooks = 2)
+            : Member(name, id, memberId), remainingBooks(remainingBooks) {}
+
+    VIPMember(const VIPMember& other) : Member(other), remainingBooks(other.remainingBooks) {}
+
+
+    ~VIPMember() {}
+
+    int getRemainingBooks() const { return remainingBooks; }
+
+    void setRemainingBooks(int remainingBooks) { this->remainingBooks = remainingBooks; }
+
+    // Overloaded <<
+    friend ostream& operator<<(ostream& out, const VIPMember& vipMember) {
+        out << "VIP Member: " << static_cast<const Member&>(vipMember) << ", Remaining Books: " << vipMember.remainingBooks;
+        return out;
+    }
+
+    // Overloaded >>
+    friend istream& operator>>(istream& in, VIPMember& vipMember) {
+        in >> static_cast<Member&>(vipMember);
+        cout << "Enter remaining books: ";
+        in >> vipMember.remainingBooks;
+        return in;
+    }
+    // Overloaded =
+    VIPMember& operator=(const VIPMember& other) {
+        if (this != &other) {
+            Member::operator=(other);
+            remainingBooks = other.remainingBooks;
+        }
+        return *this;
+    }
+};
+
 int main() {
     return 0;
 }
