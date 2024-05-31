@@ -1,0 +1,3 @@
+/Users/arshia/CLionProjects/Library+/cmake-build-debug/CMakeFiles/Library_.dir
+/Users/arshia/CLionProjects/Library+/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/arshia/CLionProjects/Library+/cmake-build-debug/CMakeFiles/rebuild_cache.dir
