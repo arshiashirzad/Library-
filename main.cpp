@@ -138,6 +138,83 @@ Staff& operator=(const Staff& other) {
     return *this;
 }
 };
+
+class Member : public Person {
+private:
+    string memberId;
+    Book* books[5];
+
+public:
+    Member(string name, string id, string memberId) : Person(name, id), memberId(memberId) {
+        for (int i = 0; i < 5; ++i) {
+            books[i] = nullptr;
+        }
+    }
+
+    Member(const Member& other) : Person(other), memberId(other.memberId) {
+        for (int i = 0; i < 5; ++i) {
+            if (other.books[i] != nullptr) {
+                books[i] = new Book(*(other.books[i]));
+            } else {
+                books[i] = nullptr;
+            }
+        }
+    }
+
+
+    ~Member() {
+        for (int i = 0; i < 5; ++i) {
+            delete books[i];
+        }
+    }
+
+
+    string getMemberId() const { return memberId; }
+    void setMemberId(const string& memberId) { this->memberId = memberId; }
+
+    // Overloaded <<
+    friend ostream& operator<<(ostream& out, const Member& member) {
+        out << "Member: " << static_cast<const Person&>(member) << ", Member ID: " << member.memberId << ", Borrowed Books: ";
+        bool first = true;
+        for (int i = 0; i < 5; ++i) {
+            if (member.books[i] != nullptr) {
+                if (!first) {
+                    out << ", ";
+                }
+                out << *(member.books[i]);
+                first = false;
+            }
+        }
+        return out;
+    }
+
+    // Overloaded >>
+    friend istream& operator>>(istream& in, Member& member) {
+        in >> static_cast<Person&>(member);
+        cout << "Enter member ID: ";
+        in >> member.memberId;
+        return in;
+    }
+
+    // Overloaded =
+    Member& operator=(const Member& other) {
+        if (this != &other) {
+            static_cast<Person&>(*this) = static_cast<const Person&>(other);
+            memberId = other.memberId;
+            for (int i = 0; i < 5; ++i) {
+                delete books[i];
+                if (other.books[i] != nullptr) {
+                    books[i] = new Book(*(other.books[i]));
+                } else {
+                    books[i] = nullptr;
+                }
+            }
+        }
+        return *this;
+    }
+
+
+};
 int main() {
     return 0;
 }
