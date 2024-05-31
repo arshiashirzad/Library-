@@ -57,7 +57,50 @@ public:
         return *this;
     }
 };
+lass Person {
+        private:
+        string name;
+        string id;
 
+        public:
+        Person(string name, string id) : name(name), id(id) {}
+
+        Person(const Person &other) : name(other.name), id(other.id) {}
+
+        ~Person() {}
+
+        string getName() const { return name; }
+
+        void setName(const string &name) { this->name = name; }
+
+        string getId() const { return id; }
+
+        void setId(const string &id) { this->id = id; }
+
+        // Overloaded <<
+        friend ostream &operator<<(ostream &out, const Person &person) {
+            out << "Name: " << person.name << ", ID: " << person.id;
+            return out;
+        }
+
+        // Overloaded >>
+        friend istream &operator>>(istream &in, Person &person) {
+            cout << "Enter person name: ";
+            in >> person.name;
+            cout << "Enter person ID: ";
+            in >> person.id;
+            return in;
+        }
+
+        // Overloaded =
+        Person &operator=(const Person &other) {
+            if (this != &other) {
+                name = other.name;
+                id = other.id;
+            }
+            return *this;
+        }
+};
 int main() {
     return 0;
 }
