@@ -57,7 +57,7 @@ public:
         return *this;
     }
 };
-lass Person {
+class Person {
         private:
         string name;
         string id;
@@ -100,6 +100,43 @@ lass Person {
             }
             return *this;
         }
+};
+class Staff : public Person {
+private:
+string staffId;
+
+public:
+Staff(string name, string id, string staffId) : Person(name, id), staffId(staffId) {}
+
+Staff(const Staff& other) : Person(other), staffId(other.staffId) {}
+
+~Staff() {}
+
+string getStaffId() const { return staffId; }
+void setStaffId(const string& staffId) { this->staffId = staffId; }
+
+// Overloaded <<
+friend ostream& operator<<(ostream& out, const Staff& staff) {
+    out << "Staff: " << static_cast<const Person&>(staff) << ", Staff ID: " << staff.staffId;
+    return out;
+}
+
+// Overloaded >>
+friend istream& operator>>(istream& in, Staff& staff) {
+    in >> static_cast<Person&>(staff);
+    cout << "Enter staff ID: ";
+    in >> staff.staffId;
+    return in;
+}
+
+// Overloaded =
+Staff& operator=(const Staff& other) {
+    if (this != &other) {
+        Person::operator=(other);
+        staffId = other.staffId;
+    }
+    return *this;
+}
 };
 int main() {
     return 0;
