@@ -212,8 +212,15 @@ public:
         }
         return *this;
     }
-
-
+    bool borrowBook(Book* book) {
+        for (int i = 0; i < 5; ++i) {
+            if (books[i] == nullptr) {
+                books[i] = new Book(*book);
+                return true;
+            }
+        }
+        return false;
+    }
 };
 int main() {
     return 0;
