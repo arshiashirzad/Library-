@@ -41,209 +41,188 @@ public:
     }
 };
 class Person {
-        private:
-        string name;
-        string id;
+protected:
+    string name;
+    string id;
 
-        public:
-        Person(string name, string id) : name(name), id(id) {}
+public:
+    Person(string name, string id) : name(name), id(id) {}
 
-        Person(const Person &other) : name(other.name), id(other.id) {}
+    Person(const Person& other) : name(other.name), id(other.id) {}
 
-        ~Person() {}
+    string getName() const { return name; }
+    void setName(const string& name) { this->name = name; }
 
-        string getName() const { return name; }
+    string getId() const { return id; }
+    void setId(const string& id) { this->id = id; }
 
-        void setName(const string &name) { this->name = name; }
+    // Overloaded <<
+    friend ostream& operator<<(ostream& os, const Person& person) {
+        os << "Person [Name: " << person.name << ", ID: " << person.id << "]";
+        return os;
+    }
 
-        string getId() const { return id; }
-
-        void setId(const string &id) { this->id = id; }
-
-        // Overloaded <<
-        friend ostream &operator<<(ostream &out, const Person &person) {
-            out << "Name: " << person.name << ", ID: " << person.id;
-            return out;
-        }
-
-        // Overloaded >>
-        friend istream &operator>>(istream &in, Person &person) {
-            cout << "Enter person name: ";
-            in >> person.name;
-            cout << "Enter person ID: ";
-            in >> person.id;
-            return in;
-        }
-
-        // Overloaded =
-        Person &operator=(const Person &other) {
-            if (this != &other) {
-                name = other.name;
-                id = other.id;
-            }
-            return *this;
-        }
+    // Overloaded >>
+    friend istream& operator>>(istream& is, Person& person) {
+        cout << "Enter name: ";
+        is >> person.name;
+        cout << "Enter ID: ";
+        is >> person.id;
+        return is;
+    }
 };
 class Staff : public Person {
 private:
-string staffId;
+    string staffId;
 
 public:
-Staff(string name, string id, string staffId) : Person(name, id), staffId(staffId) {}
+    Staff(string name, string id, string staffId)
+            : Person(name, id), staffId(staffId) {}
 
-Staff(const Staff& other) : Person(other), staffId(other.staffId) {}
+    Staff(const Staff& other) : Person(other), staffId(other.staffId) {}
 
-~Staff() {}
+    string getStaffId() const { return staffId; }
+    void setStaffId(const string& staffId) { this->staffId = staffId; }
 
-string getStaffId() const { return staffId; }
-void setStaffId(const string& staffId) { this->staffId = staffId; }
-
-// Overloaded <<
-friend ostream& operator<<(ostream& out, const Staff& staff) {
-    out << "Staff: " << static_cast<const Person&>(staff) << ", Staff ID: " << staff.staffId;
-    return out;
-}
-
-// Overloaded >>
-friend istream& operator>>(istream& in, Staff& staff) {
-    in >> static_cast<Person&>(staff);
-    cout << "Enter staff ID: ";
-    in >> staff.staffId;
-    return in;
-}
-
-// Overloaded =
-Staff& operator=(const Staff& other) {
-    if (this != &other) {
-        Person::operator=(other);
-        staffId = other.staffId;
+    // Overloaded <<
+    friend ostream& operator<<(ostream& os, const Staff& staff) {
+        os << "Staff [Name: " << staff.name << ", ID: " << staff.id << ", StaffID: " << staff.staffId << "]";
+        return os;
     }
-    return *this;
-}
+
+    // Overloaded >>
+    friend istream& operator>>(istream& is, Staff& staff) {
+        cout << "Enter name: ";
+        is >> staff.name;
+        cout << "Enter ID: ";
+        is >> staff.id;
+        cout << "Enter staff ID: ";
+        is >> staff.staffId;
+        return is;
+    }
 };
 
 class Member : public Person {
-private:
+protected:
     string memberId;
-    Book* books[5];
+    Book* books[10];
+    int bookCount;
 
 public:
-    Member(string name, string id, string memberId) : Person(name, id), memberId(memberId) {
-        for (int i = 0; i < 5; ++i) {
-            books[i] = nullptr;
-        }
-    }
+    Member(string name, string id, string memberId)
+            : Person(name, id), memberId(memberId), bookCount(0) {}
 
-    Member(const Member& other) : Person(other), memberId(other.memberId) {
-        for (int i = 0; i < 5; ++i) {
-            if (other.books[i] != nullptr) {
-                books[i] = new Book(*(other.books[i]));
-            } else {
-                books[i] = nullptr;
-            }
-        }
-    }
-
-
-    ~Member() {
-        for (int i = 0; i < 5; ++i) {
-            delete books[i];
+    Member(const Member& other)
+            : Person(other), memberId(other.memberId), bookCount(other.bookCount) {
+        for (int i = 0; i < bookCount; ++i) {
+            books[i] = other.books[i];
         }
     }
 
     string getMemberId() const { return memberId; }
     void setMemberId(const string& memberId) { this->memberId = memberId; }
 
-    // Overloaded <<
-    friend ostream& operator<<(ostream& out, const Member& member) {
-        out << "Member: " << static_cast<const Person&>(member) << ", Member ID: " << member.memberId << ", Borrowed Books: ";
-        bool first = true;
-        for (int i = 0; i < 5; ++i) {
-            if (member.books[i] != nullptr) {
-                if (!first) {
-                    out << ", ";
-                }
-                out << *(member.books[i]);
-                first = false;
-            }
+    void borrowBook(Book* book) {
+        if (bookCount < 10) {
+            books[bookCount++] = book;
         }
-        return out;
     }
 
-    // Overloaded >>
-    friend istream& operator>>(istream& in, Member& member) {
-        in >> static_cast<Person&>(member);
-        cout << "Enter member ID: ";
-        in >> member.memberId;
-        return in;
-    }
-
-    // Overloaded =
-    Member& operator=(const Member& other) {
-        if (this != &other) {
-            static_cast<Person&>(*this) = static_cast<const Person&>(other);
-            memberId = other.memberId;
-            for (int i = 0; i < 5; ++i) {
-                delete books[i];
-                if (other.books[i] != nullptr) {
-                    books[i] = new Book(*(other.books[i]));
-                } else {
-                    books[i] = nullptr;
+    void returnBook(Book* book) {
+        for (int i = 0; i < bookCount; ++i) {
+            if (books[i] == book) {
+                for (int j = i; j < bookCount - 1; ++j) {
+                    books[j] = books[j + 1];
                 }
+                bookCount--;
+                break;
             }
         }
-        return *this;
     }
-    bool borrowBook(Book* book) {
-        for (int i = 0; i < 5; ++i) {
-            if (books[i] == nullptr) {
-                books[i] = new Book(*book);
+
+    bool isBookBorrowed(Book* book) {
+        for (int i = 0; i < bookCount; ++i) {
+            if (books[i] == book) {
                 return true;
             }
         }
         return false;
     }
+
+    // Overloaded <<
+    friend ostream& operator<<(ostream& os, const Member& member) {
+        os << "Member [Name: " << member.name << ", ID: " << member.id << ", MemberID: " << member.memberId << "]";
+        return os;
+    }
+
+    // Overloaded >>
+    friend istream& operator>>(istream& is, Member& member) {
+        cout << "Enter name: ";
+        is >> member.name;
+        cout << "Enter ID: ";
+        is >> member.id;
+        cout << "Enter member ID: ";
+        is >> member.memberId;
+        return is;
+    }
 };
+
 class VIPMember : public Member {
 private:
     int remainingBooks;
 
 public:
-    VIPMember(string name, string id, string memberId, int remainingBooks = 2)
-            : Member(name, id, memberId), remainingBooks(remainingBooks) {}
+    // Constructor
+    VIPMember(string name, string id, string memberId)
+            : Member(name, id, memberId), remainingBooks(2) {}
 
-    VIPMember(const VIPMember& other) : Member(other), remainingBooks(other.remainingBooks) {}
+    // Copy Constructor
+    VIPMember(const VIPMember& other)
+            : Member(other), remainingBooks(other.remainingBooks) {}
 
-
-    ~VIPMember() {}
-
+    // Getter and Setter for remainingBooks
     int getRemainingBooks() const { return remainingBooks; }
-
     void setRemainingBooks(int remainingBooks) { this->remainingBooks = remainingBooks; }
 
-    // Overloaded <<
-    friend ostream& operator<<(ostream& out, const VIPMember& vipMember) {
-        out << "VIP Member: " << static_cast<const Member&>(vipMember) << ", Remaining Books: " << vipMember.remainingBooks;
-        return out;
+    // Borrow book
+    void borrowBook(Book* book) {
+        if (remainingBooks > 0 && bookCount < 10) {
+            books[bookCount++] = book;
+            remainingBooks--;
+        }
     }
 
-    // Overloaded >>
-    friend istream& operator>>(istream& in, VIPMember& vipMember) {
-        in >> static_cast<Member&>(vipMember);
-        cout << "Enter remaining books: ";
-        in >> vipMember.remainingBooks;
-        return in;
-    }
-    // Overloaded =
-    VIPMember& operator=(const VIPMember& other) {
-        if (this != &other) {
-            Member::operator=(other);
-            remainingBooks = other.remainingBooks;
+    // Return book
+    void returnBook(Book* book) {
+        for (int i = 0; i < bookCount; ++i) {
+            if (books[i] == book) {
+                for (int j = i; j < bookCount - 1; ++j) {
+                    books[j] = books[j + 1];
+                }
+                bookCount--;
+                remainingBooks++;
+                break;
+            }
         }
-        return *this;
+    }
+
+    // Overloaded << Operator
+    friend ostream& operator<<(ostream& os, const VIPMember& member) {
+        os << "VIPMember [Name: " << member.getName() << ", ID: " << member.getId() << ", MemberID: " << member.getMemberId() << ", RemainingBooks: " << member.remainingBooks << "]";
+        return os;
+    }
+
+    // Overloaded >> Operator
+    friend istream& operator>>(istream& is, VIPMember& member) {
+        cout << "Enter name: ";
+        is >> member.name;
+        cout << "Enter ID: ";
+        is >> member.id;
+        cout << "Enter member ID: ";
+        is >> member.memberId;
+        return is;
     }
 };
-
 class VIPBook : public Book {
 public:
     VIPBook(string name, string bookId, bool isBorrowed = false)
