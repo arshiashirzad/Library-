@@ -61,6 +61,33 @@ void Library::returnBook(const string& memberId, const string& bookId) {
     cout << "Book returned successfully!" << endl;
 }
 
+void Library::showAllData()  {
+    cout << "Library Name: " << name << endl;
+
+    cout << "Staffs:" << endl;
+    for (int i = 0; i < staffCount; ++i) {
+        cout << *staffs[i] << endl;
+    }
+    cout << "Members:" << endl;
+    for (int i = 0; i < memberCount; ++i) {
+        cout << *members[i] << endl;
+    }
+
+    cout << "VIP Members:" << endl;
+    for (int i = 0; i < VIPmemberCount; ++i) {
+        cout << *VIPmembers[i] << endl;
+    }
+
+    cout << "Books:" << endl;
+    for (int i = 0; i < bookCount; ++i) {
+        cout << *books[i] << endl;
+    }
+
+    cout << "VIP Books:" << endl;
+    for (int i = 0; i < VIPbookCount; ++i) {
+        cout << *VIPbooks[i] << endl;
+    }
+}
 template <typename T>
 T* Library::findById(T* array[], int count, const string& id) {
     for (int i = 0; i < count; ++i) {

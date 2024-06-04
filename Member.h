@@ -5,7 +5,7 @@
 #include "Book.h"
 
 class Member : public Person {
-protected:
+public:
     string memberId;
     Book* books[10];
     int bookCount;

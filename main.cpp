@@ -25,7 +25,7 @@ int main() {
     lib.addVIPBook(vipBook1);
 
     lib.borrowBook("MB1", "B1");
-    lib.returnBook("MB1", "B1");
+    lib.showAllData();
 
     lib.deleteStaff(staff1);
     lib.deleteStaff(staff2);

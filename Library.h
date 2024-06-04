@@ -6,7 +6,6 @@
 #include "VIPMember.h"
 #include "Book.h"
 #include "VIPBook.h"
-
 class Library {
 private:
     string name;
@@ -45,6 +44,8 @@ public:
 
     void borrowBook(const string& memberId, const string& bookId);
     void returnBook(const string& memberId, const string& bookId);
+
+    void showAllData() ;
 
 private:
     template <typename T>
