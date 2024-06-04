@@ -258,7 +258,7 @@ public:
         return is;
     }
 };
-// Using template for multiple types here
+//Multy typing
 template <typename T>
 struct Node {
     T* data;
@@ -276,12 +276,10 @@ private:
     Node<VIPBook>* VIPbookHead;
 
 public:
-
     Library(string name) : name(name), staffHead(nullptr), memberHead(nullptr), VIPmemberHead(nullptr), bookHead(nullptr), VIPbookHead(nullptr) {}
 
-
     ~Library() {
-        // Clean up dynamically allocated nodes and objects
+        //Found this method with help of GPT
         clearList(staffHead);
         clearList(memberHead);
         clearList(VIPmemberHead);
@@ -302,56 +300,45 @@ public:
     string getName() const { return name; }
     void setName(const string& name) { this->name = name; }
 
-
     void addStaff(Staff* staff) {
         addNode(staffHead, staff);
     }
-
 
     void deleteStaff(Staff* staff) {
         deleteNode(staffHead, staff);
     }
 
-
     void addMember(Member* member) {
         addNode(memberHead, member);
     }
-
 
     void deleteMember(Member* member) {
         deleteNode(memberHead, member);
     }
 
-
     void addVIPMember(VIPMember* vipMember) {
         addNode(VIPmemberHead, vipMember);
     }
-
 
     void deleteVIPMember(VIPMember* vipMember) {
         deleteNode(VIPmemberHead, vipMember);
     }
 
-
     void addBook(Book* book) {
         addNode(bookHead, book);
     }
-
 
     void deleteBook(Book* book) {
         deleteNode(bookHead, book);
     }
 
-
     void addVIPBook(VIPBook* vipBook) {
         addNode(VIPbookHead, vipBook);
     }
 
-
     void deleteVIPBook(VIPBook* vipBook) {
         deleteNode(VIPbookHead, vipBook);
     }
-
 
     void borrowBook(const string& memberId, const string& bookId) {
         Member* member = findNode(memberHead, memberId);
@@ -368,7 +355,6 @@ public:
             cout << "Member not found!" << endl;
         }
     }
-
 
     void returnBook(const string& memberId, const string& bookId) {
         Member* member = findNode(memberHead, memberId);
@@ -401,7 +387,6 @@ private:
         }
     }
 
-
     template <typename T>
     void deleteNode(Node<T>*& head, T* data) {
         Node<T>* temp = head;
@@ -421,18 +406,17 @@ private:
         }
     }
 
-//
-//    template <typename T>
-//    T* findNode(Node<T>* head, const string& id) {
-//        Node<T>* temp = head;
-//        while (temp) {
-//            if (temp->data->getId()== id) {
-//                return temp->data;
-//            }
-//            temp = temp->next;
-//        }
-//        return nullptr;
-//    }
+    template <typename T>
+    T* findNode(Node<T>* head, const string& id) {
+        Node<T>* temp = head;
+        while (temp) {
+            if (temp->data->getId() == id) {
+                return temp->data;
+            }
+            temp = temp->next;
+        }
+        return nullptr;
+    }
 };
 int main() {
     return 0;
