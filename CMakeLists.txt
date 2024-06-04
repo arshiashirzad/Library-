@@ -15,4 +15,6 @@ add_executable(Library_ main.cpp
         Member.cpp
         Member.h
         VipMember.h
-        VipMember.cpp)
+        VipMember.cpp
+        Library.cpp
+        Library.h)
