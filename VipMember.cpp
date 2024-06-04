@@ -10,15 +10,23 @@ int VIPMember::getRemainingBooks() const { return remainingBooks; }
 void VIPMember::setRemainingBooks(int remainingBooks) { this->remainingBooks = remainingBooks; }
 
 void VIPMember::borrowBook(Book* book) {
-    if (remainingBooks > 0 && dynamic_cast<VIPBook*>(book)) {
+    VIPBook* vipBook = static_cast<VIPBook*>(book);
+    if (remainingBooks > 0 && vipBook) {
         Member::borrowBook(book);
         remainingBooks--;
+    } else {
+        cout << "Cannot borrow book: either it is not a VIP book or you have no remaining borrows." << endl;
     }
 }
 
 void VIPMember::returnBook(Book* book) {
-    Member::returnBook(book);
-    remainingBooks++;
+    VIPBook* vipBook = static_cast<VIPBook*>(book);
+    if (vipBook) {
+        Member::returnBook(book);
+        remainingBooks++;
+    } else {
+        cout << "Cannot return book: it is not a VIP book." << endl;
+    }
 }
 
 ostream& operator<<(ostream& os, const VIPMember& member) {

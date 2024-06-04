@@ -2,11 +2,11 @@
 #define VIPMEMBER_H
 
 #include "Member.h"
+#include "VIPBook.h"
 
 class VIPMember : public Member {
 private:
     int remainingBooks;
-
 public:
     VIPMember(string name, string id, string memberId, int remainingBooks = 2);
     VIPMember(const VIPMember& other);
