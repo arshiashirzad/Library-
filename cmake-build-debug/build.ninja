@@ -61,6 +61,12 @@ build CMakeFiles/Library_.dir/Book.cpp.o: CXX_COMPILER__Library__unscanned_Debug
   OBJECT_DIR = CMakeFiles/Library_.dir
   OBJECT_FILE_DIR = CMakeFiles/Library_.dir
 
+build CMakeFiles/Library_.dir/VipBook.cpp.o: CXX_COMPILER__Library__unscanned_Debug /Users/arshia/CLionProjects/Library+/VipBook.cpp || cmake_object_order_depends_target_Library_
+  DEP_FILE = CMakeFiles/Library_.dir/VipBook.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/Library_.dir
+  OBJECT_FILE_DIR = CMakeFiles/Library_.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Library_
@@ -69,7 +75,7 @@ build CMakeFiles/Library_.dir/Book.cpp.o: CXX_COMPILER__Library__unscanned_Debug
 #############################################
 # Link the executable Library_
 
-build Library_: CXX_EXECUTABLE_LINKER__Library__Debug CMakeFiles/Library_.dir/main.cpp.o CMakeFiles/Library_.dir/Book.cpp.o
+build Library_: CXX_EXECUTABLE_LINKER__Library__Debug CMakeFiles/Library_.dir/main.cpp.o CMakeFiles/Library_.dir/Book.cpp.o CMakeFiles/Library_.dir/VipBook.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk
   OBJECT_DIR = CMakeFiles/Library_.dir
   POST_BUILD = :
