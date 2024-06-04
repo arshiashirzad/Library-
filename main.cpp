@@ -1,5 +1,6 @@
 #include <iostream>
 using namespace std;
+
 class Book {
 protected:
     string name;
@@ -15,12 +16,12 @@ public:
 
     string getName() const { return name; }
     void setName(const string& name) { this->name = name; }
-
     string getBookId() const { return bookId; }
     void setBookId(const string& bookId) { this->bookId = bookId; }
-
     bool getIsBorrowed() const { return isBorrowed; }
     void setIsBorrowed(bool isBorrowed) { this->isBorrowed = isBorrowed; }
+
+    string getId() const { return bookId; }
 
     // Overloaded <<
     friend ostream& operator<<(ostream& os, const Book& book) {
