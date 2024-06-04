@@ -1,60 +1,42 @@
 #include <iostream>
 using namespace std;
-
 class Book {
-private:
+protected:
     string name;
     string bookId;
     bool isBorrowed;
 
 public:
-    Book(string name, string bookId) : name(name), bookId(bookId), isBorrowed(false) {}
+    Book(string name, string bookId, bool isBorrowed = false)
+            : name(name), bookId(bookId), isBorrowed(isBorrowed) {}
 
-    Book(const Book &other) : name(other.name), bookId(other.bookId), isBorrowed(other.isBorrowed) {}
-
-    ~Book() {}
+    Book(const Book& other)
+            : name(other.name), bookId(other.bookId), isBorrowed(other.isBorrowed) {}
 
     string getName() const { return name; }
-
-    void setName(const string &name) { this->name = name; }
+    void setName(const string& name) { this->name = name; }
 
     string getBookId() const { return bookId; }
-
-    void setBookId(const string &bookId) { this->bookId = bookId; }
+    void setBookId(const string& bookId) { this->bookId = bookId; }
 
     bool getIsBorrowed() const { return isBorrowed; }
-
     void setIsBorrowed(bool isBorrowed) { this->isBorrowed = isBorrowed; }
 
     // Overloaded <<
-    friend ostream &operator<<(ostream &out, const Book &book) {
-        out << "Book: " << book.name << " (ID: " << book.bookId << ")";
-        if (book.isBorrowed) {
-            out << " - Borrowed";
-        } else {
-            out << " - Available";
-        }
-        return out;
+    friend ostream& operator<<(ostream& os, const Book& book) {
+        os << "Book [Name: " << book.name << ", BookID: " << book.bookId << ", IsBorrowed: " << (book.isBorrowed ? "Yes" : "No") << "]";
+        return os;
     }
 
     // Overloaded >>
-    friend istream &operator>>(istream &in, Book &book) {
-        cout << "Enter book name: ";
-        in >> book.name;
+    friend istream& operator>>(istream& is, Book& book) {
+        cout << "Enter name: ";
+        is >> book.name;
         cout << "Enter book ID: ";
-        in >> book.bookId;
-        book.isBorrowed = false; //
-        return in;
-    }
-
-    // Overloaded =
-    Book &operator=(const Book &other) {
-        if (this != &other) {
-            name = other.name;
-            bookId = other.bookId;
-            isBorrowed = other.isBorrowed;
-        }
-        return *this;
+        is >> book.bookId;
+        cout << "Enter is borrowed (1 for true, 0 for false): ";
+        is >> book.isBorrowed;
+        return is;
     }
 };
 class Person {
@@ -168,7 +150,6 @@ public:
         }
     }
 
-
     string getMemberId() const { return memberId; }
     void setMemberId(const string& memberId) { this->memberId = memberId; }
 
@@ -262,6 +243,217 @@ public:
     }
 };
 
+class VIPBook : public Book {
+public:
+    VIPBook(string name, string bookId, bool isBorrowed = false)
+            : Book(name, bookId, isBorrowed) {}
+
+    VIPBook(const VIPBook& other)
+            : Book(other) {}
+
+    // Overloaded =
+    VIPBook& operator=(const VIPBook& other) {
+        if (this != &other) {
+            this->name = other.name;
+            this->bookId = other.bookId;
+            this->isBorrowed = other.isBorrowed;
+        }
+        return *this;
+    }
+
+    // Overloaded <<
+    friend ostream& operator<<(ostream& os, const VIPBook& book) {
+        os << "VIPBook [Name: " << book.name << ", BookID: " << book.bookId << ", IsBorrowed: " << (book.isBorrowed ? "Yes" : "No") << "]";
+        return os;
+    }
+
+    // Overloaded >>
+    friend istream& operator>>(istream& is, VIPBook& book) {
+        cout << "Enter name: ";
+        is >> book.name;
+        cout << "Enter book ID: ";
+        is >> book.bookId;
+        cout << "Enter is borrowed (1 for true, 0 for false): ";
+        is >> book.isBorrowed;
+        return is;
+    }
+};
+// Using template for multiple types here
+template <typename T>
+struct Node {
+    T* data;
+    Node* next;
+    Node(T* data) : data(data), next(nullptr) {}
+};
+
+class Library {
+private:
+    string name;
+    Node<Staff>* staffHead;
+    Node<Member>* memberHead;
+    Node<VIPMember>* VIPmemberHead;
+    Node<Book>* bookHead;
+    Node<VIPBook>* VIPbookHead;
+
+public:
+
+    Library(string name) : name(name), staffHead(nullptr), memberHead(nullptr), VIPmemberHead(nullptr), bookHead(nullptr), VIPbookHead(nullptr) {}
+
+
+    ~Library() {
+        // Clean up dynamically allocated nodes and objects
+        clearList(staffHead);
+        clearList(memberHead);
+        clearList(VIPmemberHead);
+        clearList(bookHead);
+        clearList(VIPbookHead);
+    }
+
+    template <typename T>
+    void clearList(Node<T>*& head) {
+        while (head) {
+            Node<T>* temp = head;
+            head = head->next;
+            delete temp->data;
+            delete temp;
+        }
+    }
+
+    string getName() const { return name; }
+    void setName(const string& name) { this->name = name; }
+
+
+    void addStaff(Staff* staff) {
+        addNode(staffHead, staff);
+    }
+
+
+    void deleteStaff(Staff* staff) {
+        deleteNode(staffHead, staff);
+    }
+
+
+    void addMember(Member* member) {
+        addNode(memberHead, member);
+    }
+
+
+    void deleteMember(Member* member) {
+        deleteNode(memberHead, member);
+    }
+
+
+    void addVIPMember(VIPMember* vipMember) {
+        addNode(VIPmemberHead, vipMember);
+    }
+
+
+    void deleteVIPMember(VIPMember* vipMember) {
+        deleteNode(VIPmemberHead, vipMember);
+    }
+
+
+    void addBook(Book* book) {
+        addNode(bookHead, book);
+    }
+
+
+    void deleteBook(Book* book) {
+        deleteNode(bookHead, book);
+    }
+
+
+    void addVIPBook(VIPBook* vipBook) {
+        addNode(VIPbookHead, vipBook);
+    }
+
+
+    void deleteVIPBook(VIPBook* vipBook) {
+        deleteNode(VIPbookHead, vipBook);
+    }
+
+
+    void borrowBook(const string& memberId, const string& bookId) {
+        Member* member = findNode(memberHead, memberId);
+        if (member) {
+            Book* book = findNode(bookHead, bookId);
+            if (book && !book->getIsBorrowed()) {
+                member->borrowBook(book);
+                book->setIsBorrowed(true);
+                cout << "Book borrowed successfully!" << endl;
+            } else {
+                cout << "Book not found or already borrowed!" << endl;
+            }
+        } else {
+            cout << "Member not found!" << endl;
+        }
+    }
+
+
+    void returnBook(const string& memberId, const string& bookId) {
+        Member* member = findNode(memberHead, memberId);
+        if (member) {
+            Book* book = findNode(bookHead, bookId);
+            if (book) {
+                member->returnBook(book);
+                book->setIsBorrowed(false);
+                cout << "Book returned successfully!" << endl;
+            } else {
+                cout << "Book not found!" << endl;
+            }
+        } else {
+            cout << "Member not found!" << endl;
+        }
+    }
+
+private:
+    template <typename T>
+    void addNode(Node<T>*& head, T* data) {
+        Node<T>* newNode = new Node<T>(data);
+        if (!head) {
+            head = newNode;
+        } else {
+            Node<T>* temp = head;
+            while (temp->next) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+        }
+    }
+
+
+    template <typename T>
+    void deleteNode(Node<T>*& head, T* data) {
+        Node<T>* temp = head;
+        Node<T>* prev = nullptr;
+        while (temp && temp->data != data) {
+            prev = temp;
+            temp = temp->next;
+        }
+        if (temp) {
+            if (prev) {
+                prev->next = temp->next;
+            } else {
+                head = temp->next;
+            }
+            delete temp->data;
+            delete temp;
+        }
+    }
+
+//
+//    template <typename T>
+//    T* findNode(Node<T>* head, const string& id) {
+//        Node<T>* temp = head;
+//        while (temp) {
+//            if (temp->data->getId()== id) {
+//                return temp->data;
+//            }
+//            temp = temp->next;
+//        }
+//        return nullptr;
+//    }
+};
 int main() {
     return 0;
 }
