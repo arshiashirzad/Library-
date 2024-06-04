@@ -14,7 +14,7 @@ public:
     Member(string name, string id, string memberId);
     Member(const Member& other);
 
-    string getMemberId() const;
+    string getId() const;
     void setMemberId(const string& memberId);
 
     void borrowBook(Book* book);

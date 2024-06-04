@@ -30,7 +30,7 @@ void VIPMember::returnBook(Book* book) {
 }
 
 ostream& operator<<(ostream& os, const VIPMember& member) {
-    os << "VIPMember [Name: " << member.getName() << ", ID: " << member.getId() << ", MemberID: " << member.getMemberId() << ", RemainingBooks: " << member.remainingBooks << "]";
+    os << "VIPMember [Name: " << member.getName() << ", ID: " << member.getId() << ", MemberID: " << member.getId() << ", RemainingBooks: " << member.remainingBooks << "]";
     return os;
 }
 

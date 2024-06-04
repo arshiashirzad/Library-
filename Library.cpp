@@ -24,6 +24,7 @@ void Library::addVIPBook(VIPBook* vipBook) { addToArray(VIPbooks, VIPbookCount, 
 void Library::deleteVIPBook(VIPBook* vipBook) { deleteFromArray(VIPbooks, VIPbookCount, vipBook); }
 
 void Library::borrowBook(const string& memberId, const string& bookId) {
+    cout << "Attempting to borrow book with ID: " << bookId << " for member ID: " << memberId << endl;
     Member* member = findById(members, memberCount, memberId);
     if (!member) {
         cout << "Member not found!" << endl;
@@ -40,6 +41,7 @@ void Library::borrowBook(const string& memberId, const string& bookId) {
     book->setIsBorrowed(true);
     cout << "Book borrowed successfully!" << endl;
 }
+
 
 void Library::returnBook(const string& memberId, const string& bookId) {
     Member* member = findById(members, memberCount, memberId);

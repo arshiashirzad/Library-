@@ -10,7 +10,7 @@ Member::Member(const Member& other)
     }
 }
 
-string Member::getMemberId() const { return memberId; }
+string Member::getId() const { return memberId; }
 void Member::setMemberId(const string& memberId) { this->memberId = memberId; }
 
 void Member::borrowBook(Book* book) {
